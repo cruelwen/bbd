@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+home = File.join(File.dirname(__FILE__),'..')
+
+ENV['BUNDLE_GEMFILE'] ||= "#{home}/Gemfile"
+require 'bundler/setup'
+
+require File.join(home, 'lib','bbd')
+
+def parse_args
+
+  results = {}
+
+  options = OptionParser.new do |opts|
+    opts.banner = "Usage: B Build Packer [OPTIONS]"
+    opts.on("-b", "--buildinfo [ARG]", "Build Info File") do |opt|
+      results[:buildinfo] = opt
+    end
+
+    results[:package] = nil
+    opts.on("-p", "--package [ARG]", "Package Path") do |opt|
+      results[:package] = opt
+    end
+
+    home = File.join(File.dirname(__FILE__),'..')
+    results[:output] = File.join(home, 'output')
+    opts.on("-o", "--output [ARG]", "Output Path") do |opt|
+      results[:output] = opt
+    end
+
+    opts.on("-h", "--help", "Help") do
+      puts opts
+      exit 0
+    end
+  end
+  options.parse!(ARGV.dup)
+  results
+end
+
+args = parse_args
+bbd = Bbd.new(args)
+bbd.build
+
+

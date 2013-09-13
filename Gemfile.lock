@@ -1,10 +1,14 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    mime-types (1.25)
     rake (10.1.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rake
+  rest-client

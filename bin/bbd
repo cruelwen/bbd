@@ -1,10 +1,8 @@
 #!/usr/bin/env ruby
 home = File.join(File.dirname(__FILE__),'..')
 
-ENV['BUNDLE_GEMFILE'] ||= "#{home}/Gemfile"
-require 'bundler/setup'
-
 require File.join(home, 'lib','bbd')
+include Common
 
 def parse_args
 
@@ -21,8 +19,13 @@ def parse_args
       results[:package] = opt
     end
 
+    # results[:config] = "#{home}/conf/bbd.yml"
+    opts.on("-c", "--config [ARG]", "Config") do |opt|
+      results[:config] = opt
+    end
+
     home = File.join(File.dirname(__FILE__),'..')
-    results[:output] = File.join(home, 'output')
+    results[:output] = File.join(home, 'output', randstring(8))
     opts.on("-o", "--output [ARG]", "Output Path") do |opt|
       results[:output] = opt
     end
@@ -38,6 +41,8 @@ end
 
 args = parse_args
 bbd = Bbd.new(args)
-bbd.build
+sol = bbd.build
+puts sol
+
 
 
